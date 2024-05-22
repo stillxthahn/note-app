@@ -8,6 +8,7 @@ import NoteList from "@/components/NoteList/NoteList";
 import { createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
+
 	{
 		element: <AuthLayout />,
 		errorElement: <ErrorPage />,
@@ -22,14 +23,56 @@ const router = createBrowserRouter([
 					{
 						element: <Home />,
 						path: "/",
-						loader: () => {
-							return 123
+						loader: async () => {
+							const query = `query ExampleQuery {
+  								folders {
+									id
+									name
+									createAt
+								}
+							}`
+							const res = await fetch("http://localhost:4000/graphql", {
+								method: 'POST',
+								headers: {
+									"Content-Type": 'application/json',
+									"Accept": 'application/json'
+								},
+								body: JSON.stringify({
+									query
+								})
+							})
+							const { data } = await res.json()
+							console.log(data)
+							return data
 						},
 						children: [
 							{
 								element: <NoteList />,
 								path: "/folder/:folderId",
-
+								loader: async ({ params: { folderId } }) => {
+									const query = `query Folder($folderId: String) {
+										folder(folderId: $folderId) {
+											id
+											name
+										}
+									}`
+									const res = await fetch("http://localhost:4000/graphql", {
+										method: 'POST',
+										headers: {
+											"Content-Type": "application/json",
+											"Accept": "application/json"
+										},
+										body: JSON.stringify({
+											query,
+											variables: {
+												folderId: folderId
+											}
+										})
+									})
+									const { data } = await res.json()
+									console.log(data)
+									return data
+								},
 								children: [
 									{
 										element: <NoteContent />,
