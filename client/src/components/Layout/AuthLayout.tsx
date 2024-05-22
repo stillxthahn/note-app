@@ -4,7 +4,9 @@ import { Outlet } from 'react-router-dom'
 const AuthLayout = () => {
 	return (
 		<AuthProvider>
-			<Outlet />
+			<div className='mt-20'>
+				<Outlet />
+			</div>
 		</AuthProvider>
 	)
 }
