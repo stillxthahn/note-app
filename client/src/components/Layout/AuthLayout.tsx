@@ -1,13 +1,16 @@
-import AuthProvider from '@/context/AuthProvider'
+import AuthProvider, { AuthContext } from '@/context/AuthProvider'
+import { useContext } from 'react'
 import { Outlet } from 'react-router-dom'
 
 const AuthLayout = () => {
+	const { user } = useContext(AuthContext)
+	console.log("AUTHLAYOUT", user)
 	return (
-		<AuthProvider>
-			<div className='mt-20'>
+		<div className='mt-20'>
+			<AuthProvider>
 				<Outlet />
-			</div>
-		</AuthProvider>
+			</AuthProvider>
+		</div>
 	)
 }
 

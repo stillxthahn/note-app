@@ -1,8 +1,14 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { LogOut, User } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { getAuth, signOut } from 'firebase/auth'
 
 const UserInfo = () => {
+	const auth = getAuth()
+	const handleLogOut = async () => {
+		const res = await signOut(auth)
+		console.log(res)
+	}
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -19,7 +25,7 @@ const UserInfo = () => {
 						<User className="mr-2 h-4 w-4" />
 						<span>Profile</span>
 					</DropdownMenuItem>
-					<DropdownMenuItem>
+					<DropdownMenuItem onClick={handleLogOut}>
 						<LogOut className="mr-2 h-4 w-4" />
 						<span>Logout</span>
 					</DropdownMenuItem>

@@ -7,6 +7,7 @@ import "./firebase/config.ts"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <div className='container'>
-    <RouterProvider router={router}></RouterProvider>
+    <RouterProvider router={router}>
+    </RouterProvider>
   </div>
 )

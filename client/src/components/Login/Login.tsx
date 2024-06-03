@@ -3,7 +3,7 @@ import { Button } from "../ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth"
+import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {
@@ -17,10 +17,15 @@ const Login = () => {
 	}, [token])
 	const auth = getAuth()
 	const provider = new GoogleAuthProvider()
-	const handleLogIn = (event: React.BaseSyntheticEvent) => {
+	provider.setCustomParameters({
+		prompt: 'select_account'
+	})
+	const handleLogIn = async (event: React.BaseSyntheticEvent) => {
 		event.preventDefault()
-		console.log(event.currentTarget.email.value)
-		console.log(event.currentTarget.password.value)
+		const email = event.currentTarget.email.value
+		const password = event.currentTarget.password.value
+		const res = await signInWithEmailAndPassword(auth, email, password)
+		console.log("ACCOUNT", res)
 	}
 	const handleLogInWithGoogle = async () => {
 		const res = await signInWithPopup(auth, provider)
@@ -37,7 +42,7 @@ const Login = () => {
 					<div className="grid w-full items-center gap-4">
 						<div className="flex flex-col space-y-1.5">
 							<Label htmlFor="email">Email</Label>
-							<Input id="email" placeholder="Your email" />
+							<Input type="email" id="email" placeholder="Your email" />
 						</div>
 						<div className="flex flex-col space-y-1.5">
 							<Label htmlFor="password">Password</Label>
